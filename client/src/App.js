@@ -1,42 +1,38 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import {getAllPRs} from './pulls.js'; 
 
 class App extends React.Component{
-	state = { cow: '', text: ''}
+	constructor(){
+		super();
+		this.state = { prs: [] }
+		this.fetchPRs = this.fetchPRs.bind(this)
+	}
+
 	componentDidMount(){
-		this.fetchCow()
+		this.fetchPRs()
 	}
-	fetchCow = async () => {
-		const response = await fetch(`/api/cow`)
-		const initCow = await response.json()
-		const cow = initCow.moo
-		this.setState({cow})
-	}
-	customCow = async evt => {
-		evt.preventDefault()
-		const text = this.state.text
-		const response = await fetch(`/api/cow/${text}`)
-		const custom = await response.json()
-		const cow = custom.moo
-		this.setState({cow, text: ''})
-	}
-	handleChange = evt => {
-		this.setState({ [evt.target.name]: evt.target.value })
-		console.log(this.state.text)
+
+	fetchPRs = async () => {
+		let listOfPRs = await getAllPRs();
+		console.log(listOfPRs)
+		this.setState({prs: listOfPRs.slice(0, 16)});
 	}
 
 	render(){
+		let list = this.state.prs ? this.state.prs.map((pr) =>{ 
+			return( <li>
+					<a href={pr.repoURL}>
+						{pr.user + " just made a pull request to " + pr.repoName + " at " + pr.date + ", " + pr.time + "!"} 
+					</a>
+				</li>)
+		}) : <p>Loading...</p>
 		return(
 			<div className="App">
-				<code>{this.state.cow}</code>
-				<form onSubmit={this.customCow}>
-					<input type="text" name="text" 
-						value={this.state.text} 
-						onChange={this.handleChange}
-					/>
-					<button type="submit">Yeet</button>
-				</form>
+				<h3>Open Source @ UCSD GitHub Activity</h3>
+				<ul>
+					{list}
+				</ul>
 			</div>
 		)
 	}
