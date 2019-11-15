@@ -1,12 +1,11 @@
 const express = require('express')
-const cowsay = require('cowsay')
 const cors = require('cors')
 const path = require('path')
 
 // create server
 const app = express()
 
-// serve our api route (custom talking cow)
+/* serve our api route (custom talking cow)
 app.get('/api/cow/:say', cors(), async(req, res, next) => {
 	try{
 		const text = req.params.say
@@ -26,7 +25,7 @@ app.get('/api/cow/', cors(), async(req, res, next) => {
 		next(err)
 	}
 })
-
+*/
 // serve static files from react frontend app
 app.use(express.static(path.join(__dirname, 'client/build')))
 // anything that doesn't match the above, send back index.html
