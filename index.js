@@ -1,6 +1,7 @@
 const express = require('express')
 const cowsay = require('cowsay')
 const cors = require('cors')
+const path = require('path')
 
 // create server
 const app = express()
@@ -24,6 +25,13 @@ app.get('/api/cow/', cors(), async(req, res, next) => {
 	} catch(err){
 		next(err)
 	}
+})
+
+// serve static files from react frontend app
+app.use(express.static(path.join(__dirname, 'client/build')))
+// anything that doesn't match the above, send back index.html
+app.get('*', (req, res) => {
+	res.sendFile(path.join(__dirname + 'client/build/index.html'))
 })
 
 // choose the port and start the server
