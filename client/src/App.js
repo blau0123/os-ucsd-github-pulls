@@ -68,8 +68,8 @@ class App extends React.Component{
 					<p>{this.state.prs[date].map((pr) => {
 						return(
 						<li>
+							<p>{pr.time}</p>
 							<a href={pr.repoURL}>
-								<p>{pr.time}</p>
 								<p>{pr.user + " made a pull request to " + pr.repoName}</p>
 							</a>
 						</li>
