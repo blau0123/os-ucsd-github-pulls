@@ -20,3 +20,7 @@
 .App-link {
   color: #09d3ac;
 }
+
+.pr-list{
+  list-style-type: none
+}

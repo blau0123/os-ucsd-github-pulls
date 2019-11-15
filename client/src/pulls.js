@@ -23,6 +23,22 @@ function getListOfReposAndPRs(allPRs){
 			
 			// make sure the pr was actually merged in
 			if (currRepo[j].merged_at != null){
+				/*
+				if (dateStr in listOfPRs){
+					listOfPRs[dateStr].push({
+						user: user,
+						repoURL: repoURL,
+						time: timeStr,
+					});
+				}
+				else{
+					listOfPRs[dateStr] = [{
+						user: user,
+						repoURL: repoURL,
+						time: timeStr
+					}]
+				}
+				*/
 				listOfPRs.push({
 					user: user, 
 					repoURL: repoURL,
@@ -48,6 +64,17 @@ function getListOfReposAndPRs(allPRs){
 	});
 
 	return listOfPRs;
+	/*
+	let orderedPRs = {}
+	Object.keys(listOfPRs).sort((a,b) => {
+		let dateA = new Date(a.date);
+		let dateB = new Date(b.date);
+		return new Date(b.date) - new Date(a.date);
+	}).forEach(function(key){
+		orderedPRs[key] = listOfPRs[key]
+	});
+
+	return orderedPRs;*/
 }
 
 /*
