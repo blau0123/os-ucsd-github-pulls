@@ -1,22 +1,29 @@
 import React from 'react';
 import './App.css';
-import {getAllPRs} from './pulls.js'; 
 
 class App extends React.Component{
 	constructor(){
 		super();
 		this.state = { prs: [] }
-		this.fetchPRs = this.fetchPRs.bind(this)
+		this.fetchPRs = this.fetchPRs.bind(this);
+		this.handleClick = this.handleClick.bind(this);
 	}
 
 	componentDidMount(){
 		this.fetchPRs()
 	}
 
+	/*
+	 * Fetch pr's from /api/data
+	 */
 	fetchPRs = async () => {
-		let listOfPRs = await getAllPRs();
-		console.log(listOfPRs)
+		let listOfPRsResp = await fetch('/api/data');
+		let listOfPRs = await listOfPRsResp.json();
 		this.setState({prs: listOfPRs.slice(0, 16)});
+	}
+
+	handleClick(evt){
+		this.fetchPRs();
 	}
 
 	render(){
@@ -33,6 +40,7 @@ class App extends React.Component{
 				<ul>
 					{list}
 				</ul>
+				<button onClick={this.handleClick}>Refresh!</button>
 			</div>
 		)
 	}

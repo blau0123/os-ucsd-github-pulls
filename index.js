@@ -1,36 +1,32 @@
-const express = require('express')
-const cors = require('cors')
-const path = require('path')
+const express = require('express');
+const cors = require('cors');
+const fetch = require('node-fetch');
+const path = require('path');
+const getAllPRs = require('./client/src/pulls.js');
 
 // create server
 const app = express()
 
-/* serve our api route (custom talking cow)
-app.get('/api/cow/:say', cors(), async(req, res, next) => {
-	try{
-		const text = req.params.say
-		const moo = cowsay.say({text})
-		res.json({moo})
-	} catch(err){
-		next(err)
-	}
-})
+cache = {}
 
-// serve base route that returns hello world cow
-app.get('/api/cow/', cors(), async(req, res, next) => {
-	try {
-		const moo = cowsay.say({text: 'Hello World!' })
-		res.json({moo})
-	} catch(err){
-		next(err)
-	}
-})
-*/
 // serve static files from react frontend app
 app.use(express.static(path.join(__dirname, 'client/build')))
-// anything that doesn't match the above, send back index.html
+/* anything that doesn't match the above, send back index.html
 app.get('*', (req, res) => {
 	res.sendFile(path.join(__dirname + 'client/build/index.html'))
+})
+*/
+app.get('/api/data', async function(req, res){
+	// if cache was updated > 10 min ago
+	if (!cache["data"] || (cache["time"] && (new Date()).getTime() - cache["time"].getTime() > 10 * 60 * 1000)){
+		cache["data"] = await getAllPRs();
+		cache["time"] = new Date();
+		console.log("info was updated!");
+	}
+	else{
+		console.log("no new info!");
+	}
+	res.send(cache["data"]);
 })
 
 // choose the port and start the server
