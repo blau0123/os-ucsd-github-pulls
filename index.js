@@ -11,11 +11,8 @@ cache = {}
 
 // serve static files from react frontend app
 app.use(express.static(path.join(__dirname, 'client/build')))
-/* anything that doesn't match the above, send back index.html
-app.get('*', (req, res) => {
-	res.sendFile(path.join(__dirname + 'client/build/index.html'))
-})
-*/
+
+// get the github api data and check with cache
 app.get('/api/data', async function(req, res){
 	// if cache was updated > 10 min ago
 	if (!cache["data"] || (cache["time"] && (new Date()).getTime() - cache["time"].getTime() > 10 * 60 * 1000)){

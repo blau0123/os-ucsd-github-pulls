@@ -23,6 +23,7 @@ class App extends React.Component{
 	}
 
 	handleClick(evt){
+		this.setState({prs:[]});
 		this.fetchPRs();
 	}
 
@@ -30,10 +31,10 @@ class App extends React.Component{
 		let list = this.state.prs ? this.state.prs.map((pr) =>{ 
 			return( <li>
 					<a href={pr.repoURL}>
-						{pr.user + " just made a pull request to " + pr.repoName + " at " + pr.date + ", " + pr.time + "!"} 
+						{pr.date + ", " + pr.time + "\n" + pr.user + " just made a pull request to " + pr.repoName} 
 					</a>
 				</li>)
-		}) : <p>Loading...</p>
+		}) : <ul>Loading...</ul>
 		return(
 			<div className="App">
 				<h3>Open Source @ UCSD GitHub Activity</h3>
