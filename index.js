@@ -18,7 +18,7 @@ app.get('/api/data', async function(req, res){
 	if (!cache["data"] || (cache["time"] && (new Date()).getTime() - cache["time"].getTime() > 10 * 60 * 1000)){
 		cache["data"] = await getAllPRs();
 		cache["time"] = new Date();
-
+		console.log(cache["data"]);
 		console.log("info was updated!");
 	}
 	else{

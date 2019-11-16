@@ -22,9 +22,8 @@ class App extends React.Component{
 		try{
 			let listOfPRsResp = await fetch('/api/data');
 			let listOfPRs = await listOfPRsResp.json();
-			console.log(listOfPRs);
+
 			listOfPRs = listOfPRs.slice(0, 16);
-			console.log(listOfPRs);
 			// group each pr with other prs that were made on the same day
 			let orderedPRs = this.groupByDate(listOfPRs);
 			this.setState({prs: orderedPRs});
