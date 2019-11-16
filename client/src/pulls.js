@@ -23,22 +23,6 @@ function getListOfReposAndPRs(allPRs){
 			
 			// make sure the pr was actually merged in
 			if (currRepo[j].merged_at != null){
-				/*
-				if (dateStr in listOfPRs){
-					listOfPRs[dateStr].push({
-						user: user,
-						repoURL: repoURL,
-						time: timeStr,
-					});
-				}
-				else{
-					listOfPRs[dateStr] = [{
-						user: user,
-						repoURL: repoURL,
-						time: timeStr
-					}]
-				}
-				*/
 				listOfPRs.push({
 					user: user, 
 					repoURL: repoURL,
@@ -64,17 +48,6 @@ function getListOfReposAndPRs(allPRs){
 	});
 
 	return listOfPRs;
-	/*
-	let orderedPRs = {}
-	Object.keys(listOfPRs).sort((a,b) => {
-		let dateA = new Date(a.date);
-		let dateB = new Date(b.date);
-		return new Date(b.date) - new Date(a.date);
-	}).forEach(function(key){
-		orderedPRs[key] = listOfPRs[key]
-	});
-
-	return orderedPRs;*/
 }
 
 /*
@@ -90,18 +63,25 @@ async function getPullRequests(repo){
  * Make HTTP request to retrieve list of repos from os-ucsd
  */
 async function getRepos(){
-	let reposResponse = await fetch('https://api.github.com/orgs/os-ucsd/repos')
-	let repos = await reposResponse.json();
+	// try-catch in case we reach the limit for github api and we get some error trying to use repos var
+	try{
+		let reposResponse = await fetch('https://api.github.com/orgs/os-ucsd/repos')
+		let repos = await reposResponse.json();
 	
-	// get pr's for all repos
-	let allPRs = await Promise.all( 
-		repos.map(repo => {
-			// each pr returned is a list of pr's for a single repo
-			return getPullRequests(repo);
-		})
-	);
+		// get pr's for all repos
+		let allPRs = await Promise.all( 
+			repos.map(repo => {
+				// each pr returned is a list of pr's for a single repo
+				return getPullRequests(repo);
+			})
+		);
 
-	return getListOfReposAndPRs(allPRs);
+		return getListOfReposAndPRs(allPRs)
+	}
+	catch(err){
+		console.log("error!")
+		return null;
+	}
 }
 
 async function getAllPRs(){

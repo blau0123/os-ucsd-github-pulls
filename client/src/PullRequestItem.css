@@ -1,0 +1,10 @@
+.pr-link{
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+}
+
+.pr-link:hover{
+    color: #50C1F5;
+    font-weight: bold;
+}

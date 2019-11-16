@@ -1,5 +1,6 @@
 import React from 'react';
 import './App.css';
+import PullRequestItem from './PullRequestItem.js';
 
 class App extends React.Component{
 	constructor(){
@@ -18,12 +19,19 @@ class App extends React.Component{
 	 * Fetch pr's from /api/data
 	 */
 	fetchPRs = async () => {
-		let listOfPRsResp = await fetch('/api/data');
-		let listOfPRs = await listOfPRsResp.json();
-		listOfPRs = listOfPRs.slice(0, 16);
-		// group each pr with other prs that were made on the same day
-		let orderedPRs = this.groupByDate(listOfPRs);
-		this.setState({prs: orderedPRs});
+		try{
+			let listOfPRsResp = await fetch('/api/data');
+			let listOfPRs = await listOfPRsResp.json();
+
+			listOfPRs = listOfPRs.slice(0, 16);
+			// group each pr with other prs that were made on the same day
+			let orderedPRs = this.groupByDate(listOfPRs);
+			this.setState({prs: orderedPRs});
+		}
+		catch(err){
+			console.log(err);
+			return;
+		}
 	}
 
 	/*
@@ -55,6 +63,11 @@ class App extends React.Component{
 		return sortedGroup;
 	}
 
+	/*
+	 * When refresh button is clicked, fetches the PRs again
+	 * Setting state to empty array is for UX (so the user knows that there was an actual refresh
+	 * rather than nothing happening/lagging
+	 */
 	handleClick(evt){
 		this.setState({prs:[]});
 		this.fetchPRs();
@@ -62,30 +75,41 @@ class App extends React.Component{
 
 	render(){
 		let list = this.state.prs ? Object.keys(this.state.prs).map((date) => {
-			return( 
-				<div>
-					<h5>{date}</h5>
-					<p>{this.state.prs[date].map((pr) => {
-						return(
-						<li>
-							<p>{pr.time}</p>
-							<a href={pr.repoURL}>
-								<p>{pr.user + " made a pull request to " + pr.repoName}</p>
-							</a>
-						</li>
-						)
-					})}</p>
-				</div>
+			return(
+				<div className="pr-list-container">
+					<div className="pr-list-content">	
+						<h5 className="date-text">{date}</h5>
+						<p className="pr-info">
+						{this.state.prs[date].map((pr) => {
+							return(
+								<PullRequestItem prData={pr} />
+							);
+						})}
+						</p>
+					</div>
+				</div>	
 			)
-		}) : <ul>Loading...</ul>
-		
-		return(
+		}) : <p>yeet</p>
+
+		/* if problem with github api, show this error message but if no problem, show regular
+		let checkForLimit = list ? 
 			<div className="App">
-				<h3>Open Source @ UCSD GitHub Activity</h3>
-				<ul className="pr-list">
+				{list}
+			</div>
+			: <h5 className="error-text">No pull requests to show currently.</h5>
+		*/
+		return(
+			<div>
+				<h3 className="title">Open Source @ UCSD GitHub Activity</h3>
+			
+				<div className="App">
 					{list}
-				</ul>
-				<button onClick={this.handleClick}>Refresh!</button>
+				</div>
+			
+				{/*checkForLimit*/}
+				<div className="btn-container">
+					<button onClick={this.handleClick} className="refresh-btn">Refresh!</button>
+				</div>*
 			</div>
 		)
 	}
