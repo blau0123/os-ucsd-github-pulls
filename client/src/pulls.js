@@ -15,20 +15,15 @@ function getListOfReposAndPRs(allPRs){
 			// get repo url by remove the /pull/{number} at the end
 			let repoURL = currRepo[j].html_url.split("/pull/", 2)[0];
 			let repoName = repoURL.split("/os-ucsd/", 2)[1];
-			let timeOfPR = new Date(currRepo[j].merged_at);
-
-			// processing merged_at time to something readable
-			let dateStr = timeOfPR.toDateString();
-			let timeStr = timeOfPR.toLocaleTimeString();
-			
+			let merged_time = currRepo[j].merged_at;
+		
 			// make sure the pr was actually merged in
 			if (currRepo[j].merged_at != null){
 				listOfPRs.push({
 					user: user, 
 					repoURL: repoURL,
 					repoName: repoName,
-					date: dateStr,
-					time: timeStr,
+					merged_time: merged_time,
 				});
 			}
 		}
@@ -36,17 +31,19 @@ function getListOfReposAndPRs(allPRs){
 
 	// sorting all of the pr's based on time merged in
 	listOfPRs = listOfPRs.sort((a,b) => {
-		let dateA = new Date(a.date);
-		let dateB = new Date(b.date);
-
+		let dateA = new Date(a.merged_time);
+		let dateB = new Date(b.merged_time);
+		return dateB - dateA;	
+		/*
 		if (dateA - dateB === 0){	
 			let timeA = Date.parse('1/01/2019 ' + a.time);
 			let timeB = Date.parse('1/01/2019 ' + b.time);	
 			return timeB - timeA;
 		}
 		return new Date(b.date) - new Date(a.date);
+	*/
 	});
-	console.log(listOfPRs);
+	
 	return listOfPRs;
 }
 

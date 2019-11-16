@@ -42,11 +42,22 @@ class App extends React.Component{
 		// group by date
 		let groupedPRs = {}
 		for (let i = 0; i < listOfPRs.length; i++){
+			// get date to set as key (need to convert into a readable string first)
+			let dateStr = new Date(listOfPRs[i].merged_time).toDateString();
+			//let timeStr = listOfPRs[i].merged_time.toLocaleTimeString();
+
+			/*
 			if (listOfPRs[i].date in groupedPRs){
 				groupedPRs[listOfPRs[i].date].push(listOfPRs[i]);
 			}
 			else{
 				groupedPRs[listOfPRs[i].date] = [listOfPRs[i]];
+			}*/
+			if (dateStr in groupedPRs){
+				groupedPRs[dateStr].push(listOfPRs[i]);
+			}
+			else{
+				groupedPRs[dateStr] = [listOfPRs[i]];
 			}
 		}
 
