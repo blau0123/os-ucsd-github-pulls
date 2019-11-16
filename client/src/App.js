@@ -59,7 +59,6 @@ class App extends React.Component{
 		}).forEach(function(key){
 			sortedGroup[key] = groupedPRs[key];
 		});
-
 		return sortedGroup;
 	}
 
@@ -79,13 +78,13 @@ class App extends React.Component{
 				<div className="pr-list-container">
 					<div className="pr-list-content">	
 						<h5 className="date-text">{date}</h5>
-						<p className="pr-info">
+						<div className="pr-info">
 						{this.state.prs[date].map((pr) => {
 							return(
 								<PullRequestItem prData={pr} />
 							);
 						})}
-						</p>
+						</div>
 					</div>
 				</div>	
 			)
