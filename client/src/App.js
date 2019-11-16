@@ -73,6 +73,7 @@ class App extends React.Component{
 	}
 
 	render(){
+		console.log(this.state.prs);
 		let list = this.state.prs ? Object.keys(this.state.prs).map((date) => {
 			return(
 				<div className="pr-list-container">
