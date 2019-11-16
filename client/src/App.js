@@ -22,8 +22,9 @@ class App extends React.Component{
 		try{
 			let listOfPRsResp = await fetch('/api/data');
 			let listOfPRs = await listOfPRsResp.json();
-
+			console.log(listOfPRs);
 			listOfPRs = listOfPRs.slice(0, 16);
+			console.log(listOfPRs);
 			// group each pr with other prs that were made on the same day
 			let orderedPRs = this.groupByDate(listOfPRs);
 			this.setState({prs: orderedPRs});
@@ -73,7 +74,6 @@ class App extends React.Component{
 	}
 
 	render(){
-		console.log(this.state.prs);
 		let list = this.state.prs ? Object.keys(this.state.prs).map((date) => {
 			return(
 				<div className="pr-list-container">
@@ -91,13 +91,6 @@ class App extends React.Component{
 			)
 		}) : <p>yeet</p>
 
-		/* if problem with github api, show this error message but if no problem, show regular
-		let checkForLimit = list ? 
-			<div className="App">
-				{list}
-			</div>
-			: <h5 className="error-text">No pull requests to show currently.</h5>
-		*/
 		return(
 			<div>
 				<h3 className="title">Open Source @ UCSD GitHub Activity</h3>
@@ -106,7 +99,6 @@ class App extends React.Component{
 					{list}
 				</div>
 			
-				{/*checkForLimit*/}
 				<div className="btn-container">
 					<button onClick={this.handleClick} className="refresh-btn">Refresh!</button>
 				</div>*
