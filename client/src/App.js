@@ -1,6 +1,7 @@
 import React from 'react';
 import './App.css';
-import PullRequestItem from './PullRequestItem.js';
+import PullRequestItem from './components/PullRequestItem.js';
+import Timeline from './components/Timeline.js';
 
 class App extends React.Component{
 	constructor(){
@@ -44,15 +45,6 @@ class App extends React.Component{
 		for (let i = 0; i < listOfPRs.length; i++){
 			// get date to set as key (need to convert into a readable string first)
 			let dateStr = new Date(listOfPRs[i].merged_time).toDateString();
-			//let timeStr = listOfPRs[i].merged_time.toLocaleTimeString();
-
-			/*
-			if (listOfPRs[i].date in groupedPRs){
-				groupedPRs[listOfPRs[i].date].push(listOfPRs[i]);
-			}
-			else{
-				groupedPRs[listOfPRs[i].date] = [listOfPRs[i]];
-			}*/
 			if (dateStr in groupedPRs){
 				groupedPRs[dateStr].push(listOfPRs[i]);
 			}
@@ -76,7 +68,7 @@ class App extends React.Component{
 	/*
 	 * When refresh button is clicked, fetches the PRs again
 	 * Setting state to empty array is for UX (so the user knows that there was an actual refresh
-	 * rather than nothing happening/lagging
+	 * rather than nothing happening/lagging)
 	 */
 	handleClick(evt){
 		this.setState({prs:[]});
@@ -84,34 +76,15 @@ class App extends React.Component{
 	}
 
 	render(){
-		let list = this.state.prs ? Object.keys(this.state.prs).map((date) => {
-			return(
-				<div className="pr-list-container">
-					<div className="pr-list-content">	
-						<h5 className="date-text">{date}</h5>
-						<div className="pr-info">
-						{this.state.prs[date].map((pr) => {
-							return(
-								<PullRequestItem prData={pr} />
-							);
-						})}
-						</div>
-					</div>
-				</div>	
-			)
-		}) : <p>yeet</p>
-
 		return(
 			<div>
 				<h3 className="title">Open Source @ UCSD GitHub Activity</h3>
 			
-				<div className="App">
-					{list}
-				</div>
+				<Timeline prs={this.state.prs} />
 			
 				<div className="btn-container">
 					<button onClick={this.handleClick} className="refresh-btn">Refresh!</button>
-				</div>*
+				</div>
 			</div>
 		)
 	}

@@ -1,25 +1,11 @@
-.title{
-    text-align: center;
-}
-
-.error-text{
-    text-align: center;
-}
-
-.btn-container{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.App{
+.list-container{
     display: flex;
     flex-direction: column;
     position: relative;
     margin: 40px 0;
 }
 
-.App::after{
+.list-container::after{
     background-color: #50C1F5;
     content: '';
     position: absolute;
@@ -27,7 +13,7 @@
     width: 4px;
     height: 100%;
 }
-/*
+
 .pr-info{
   font-size: 15px;
 }
@@ -64,14 +50,20 @@
     display: flex;
     flex-direction: column;
     align-items: flex-end;
+    /*padding: 15px;*/
     position: relative;
+    /*width: 400px;*/
     width: wrap;
     padding: 25px 50px;
     max-width: 70%;
     text-align: right;
     transition: all .2s ease-in-out;
 }
-
+/*
+.pr-list-content:hover{
+    transform: scale(1.1);
+}
+*/
 .pr-list-content .circle{
     background-color: #fff;
     border: 3px solid #50C1F5;
@@ -87,4 +79,4 @@
 .pr-list-container:nth-child(odd) .pr-list-content .circle{
     right: auto;
     left: -40px;
-}*/
+}
