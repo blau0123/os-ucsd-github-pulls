@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const fetch = require('node-fetch');
 const path = require('path');
-const getAllPRs = require('./client/src/pulls.js');
+const getAllPRs = require('./pulls.js');
 
 // create server
 const app = express()

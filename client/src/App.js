@@ -1,6 +1,5 @@
 import React from 'react';
 import './App.css';
-import PullRequestItem from './components/PullRequestItem.js';
 import Timeline from './components/Timeline.js';
 
 class App extends React.Component{
